@@ -1,0 +1,109 @@
+body {
+	background-color:rgb(20,20,20);
+	font-family: "sans serif";
+	color: #dddddd;
+}
+
+section {
+	padding: 20px;
+	margin: 40px;
+	background: #3f3f3f;
+	border: #ffffff solid 2px;
+	border-radius: 25px;
+}
+
+ul.hlist {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+ul.hlist li {
+	float: left;
+}
+
+ul.hlist li a {
+	display: block;
+	color: #dddddd;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+}
+
+ul.hlist li a:hover {
+	background-color: #dddddd;
+	color: rgb(20,20,20);
+}
+
+h1 {
+	color: #dddddd;
+	text-align: center;
+}
+
+h2 {
+	text-align: center;
+	color: #eeeeee;
+}
+
+a:link, a:visited {
+	color: #dddddd;
+	background-color: rgb(20,20,20);
+	text-decoration: none;
+}
+
+a:hover {
+	color: rgb(20,20,20);
+	background-color: #dddddd;
+	text-decoration: underline;
+}
+
+a:active {
+	color: yellow;
+	background-color: blue;
+	text-decoration: underline;
+}
+
+.button1 {
+	background-color: #4CAF50;
+	border: none;
+	border-radius: 12px;
+	color: white;
+	padding: 15px 32px;
+	margin: 15px;
+	text-align: center;
+	text-deocration: none;
+	display: inline-block;
+	font-size: 16px;
+}
+
+.button1:hover {
+	color: #4CAF50;
+	background-color: white;
+}
+
+table {
+	width: 60%;
+	margin: auto;
+	background-color: #f1f1c1;
+	color: #000000;
+	border-spacing: 5px;
+}
+
+table tr:nth-child(even) {
+	background-color: #eee;
+}
+table tr:nth-child(odd) {
+	background-color: #ffff;
+}
+
+table th, td {
+	border: 1px solid black;
+	padding: 15px;
+}
+
+.val {
+	background: black;
+	color: white;
+}
+

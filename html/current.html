@@ -1,0 +1,268 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Current Readings</title>
+		<link rel="stylesheet" href="css/current.css">
+	</head>
+
+	<body>
+		<h1>Indiduino Meteostation</h1>
+
+		<nav>
+			<ul class="hlist">
+				<li> <a href="#flags">Flags</a> </li>
+				<li> <a href="#temps">Temperatures</a> </li>
+				<li> <a href="#dht22">DHT22 Sensor</a> </li>
+				<li> <a href="#mlx96014">MLX96014 Sensor</a> </li>
+				<li> <a href="#bmp108">BMP108 Sensor</a> </li>
+				<li> <a href="#light">Light Sensor</a> </li>
+			</ul>
+		</nav>
+		<hr>
+
+		<p>Time Updated <span id="reTIME">NOT UPDATED</span><button class="button1" id="updateButton">Update</button></p>
+
+		<section>
+			<h2 id="flags">Flags</h2>
+			<table>
+				<tr>
+					<th>Id</th>
+					<th>Value</th>
+				</tr>
+				<tr>
+					<td>cloudFlag</td>
+					<td class="val" id="recloudFlag">NOT UPDATED</td>
+				</tr>
+				<tr>
+					<td>dewFlag</td>
+					<td class="val" id="redewFlag">NOT UPDATED</td>
+				</tr>
+				<tr>
+					<td>frezzingFlag</td>
+					<td class="val" id="refrezzingFlag">NOT UPDATED</td>
+				</tr>
+			</table>
+		</section>
+
+		<section>
+			<h2 id="temps">Temperature readings from various sensors</h2>
+
+			<table>
+				<tr>
+					<th>Id</th>
+					<th>Sensor</th>
+					<th>Value</th>
+					<th>Unit</th>
+				</tr>
+				<tr>
+					<td>Thr</td>
+					<td>DHT22</td>
+					<td class="val" id="reThr">NOT UPDATED</td>
+					<td>&deg; C</td>
+				</tr>
+				<tr>
+					<td>Tir</td>
+					<td>MLX96014</td>
+					<td class="val" id="reTir">NOT UPDATED</td>
+					<td>&deg; C</td>
+				</tr>
+				<tr>
+					<td>Tp</td>
+					<td>BMP108</td>
+					<td class="val" id="reTp">NOT UPDATED</td>
+					<td>&deg; C</td>
+				</tr>
+				<tr>
+					<td>T</td>
+					<td>Selected as Temperature</td>
+					<td class="val" id="reT">NOT UPDATED</td>
+					<td>&deg; C</td>
+				</tr>
+				<tr>
+					<td>Dew</td>
+					<td>Dew point calculation</td>
+					<td class="val" id="reDew">NOT UPDATED</td>
+					<td>&deg; C</td>
+				</tr>
+			</table>
+		</section>
+
+		<section>
+			<h2 id="dht22">DHT22 Sensor</h2>
+
+			<table>
+				<tr>
+					<th>Id</th>
+					<th>Description</th>
+					<th>Value</th>
+					<th>Unit</th>
+				</tr>
+				<tr>
+					<td>HR</td>
+					<td>Relative Humidity</td>
+					<td class="val" id="dht22HR">NOT UPDATED</td>
+					<td>%</td>
+				</tr>
+				<tr>
+					<td>Thr</td>
+					<td>Temperature</td>
+					<td class="val" id="dht22Thr">NOT UPDATED</td>
+					<td>&deg; C</td>
+				</tr>
+			</table>
+
+		</section>
+
+		<section>
+			<h2 id="mlx96014">MLX96014 Sensor</h2>
+
+			<table>
+				<tr>
+					<th>Id</th>
+					<th>Description</th>
+					<th>Value</th>
+					<th>Unit</th>
+				</tr>
+				<tr>
+					<td>IR</td>
+					<td>Actual Remote Temp</td>
+					<td class="val" id="mlxIR">NOT UPDATED</td>
+					<td>&deg; C</td>
+				</tr>
+				<tr>
+					<td>Tir</td>
+					<td>Sensor Temp</td>
+					<td class="val" id="mlxTir">NOT UPDATED</td>
+					<td>&deg; C</td>
+				</tr>
+				<tr>
+					<td>skyT</td>
+					<td>Calculated Sky Temperature</td>
+					<td class="val" id="reskyT">NOT UPDATED</td>
+					<td>&deg; C</td>
+				</tr>
+				<tr>
+					<td>clouds</td>
+					<td>Calculated Cloud Coverage</td>
+					<td class="val" id="reclouds">NOT UPDATED</td>
+					<td>%</td>
+				</tr>
+			</table>
+
+		</section>
+
+		<section>
+			<h2 id="bmp108">BMP108 Sensor</h2>
+
+			<table>
+				<tr>
+					<th>Id</th>
+					<th>Description</th>
+					<th>Value</th>
+					<th>Unit</th>
+				</tr>
+				<tr>
+					<td>P</td>
+					<td>Pressure</td>
+					<td class="val" id="bmp108P">NOT UPDATED</td>
+					<td>mmHg</td>
+				</tr>
+				<tr>
+					<td>Tp</td>
+					<td>Temperature</td>
+					<td class="val" id="bmp108Tp">NOT UPDATED</td>
+					<td>&deg; C</td>
+				</tr>
+			</table>
+
+		</section>
+
+		<section>
+			<h2 id="light">Light Sensor</h2>
+
+			<table>
+				<tr>
+					<th>Id</th>
+					<th>Description</th>
+					<th>Value</th>
+					<th>Unit</th>
+				</tr>
+				<tr>
+					<td>Light</td>
+					<td>Light</td>
+					<td class="val" id="lightLight">NOT UPDATED</td>
+					<td>?</td>
+				</tr>
+			</table>
+		</section>
+
+		<script>
+
+var xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function () {
+	if (this.readyState == 4 && this.status == 200) {
+		//document.getElementById("demo").innterHTML = xhttp.responseText;
+		var response = JSON.parse(xhttp.responseText);
+
+		document.getElementById('reTIME').innerHTML = response.TIME;
+		document.getElementById('recloudFlag').innerHTML = response.cloudFlag;
+		document.getElementById('redewFlag').innerHTML = response.dewFlag;
+		document.getElementById('refrezzingFlag').innerHTML = response.frezzingFlag;
+		document.getElementById('reThr').innerHTML = response.Thr;
+		document.getElementById('dht22Thr').innerHTML = response.Thr;
+		document.getElementById('reTir').innerHTML = response.Tir;
+		document.getElementById('mlxTir').innerHTML = response.Tir;
+		document.getElementById('reTp').innerHTML = response.Tp;
+		document.getElementById('bmp108Tp').innerHTML = response.Tp;
+		document.getElementById('reT').innerHTML = response.T;
+		document.getElementById('reDew').innerHTML = response.Dew;
+		document.getElementById('dht22HR').innerHTML = response.HR;
+		document.getElementById('mlxIR').innerHTML = response.IR;
+		document.getElementById('reskyT').innerHTML = response.skyT;
+		document.getElementById('reclouds').innerHTML = response.clouds;
+		document.getElementById('bmp108P').innerHTML = response.P;
+		document.getElementById('lightLight').innerHTML = response.Light;
+	}
+}
+xhttp.open("GET","CHART/RTdata.json", true);
+xhttp.send();
+
+	
+var btn = document.getElementById('updateButton');
+btn.addEventListener('click', function() {
+var xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function () {
+	if (this.readyState == 4 && this.status == 200) {
+		//document.getElementById("demo").innterHTML = xhttp.responseText;
+		var response = JSON.parse(xhttp.responseText);
+
+		document.getElementById('reTIME').innerHTML = response.TIME;
+		document.getElementById('recloudFlag').innerHTML = response.cloudFlag;
+		document.getElementById('redewFlag').innerHTML = response.dewFlag;
+		document.getElementById('refrezzingFlag').innerHTML = response.frezzingFlag;
+		document.getElementById('reThr').innerHTML = response.Thr;
+		document.getElementById('dht22Thr').innerHTML = response.Thr;
+		document.getElementById('reTir').innerHTML = response.Tir;
+		document.getElementById('mlxTir').innerHTML = response.Tir;
+		document.getElementById('reTp').innerHTML = response.Tp;
+		document.getElementById('bmp108Tp').innerHTML = response.Tp;
+		document.getElementById('reT').innerHTML = response.T;
+		document.getElementById('reDew').innerHTML = response.Dew;
+		document.getElementById('dht22HR').innerHTML = response.HR;
+		document.getElementById('mlxIR').innerHTML = response.IR;
+		document.getElementById('reskyT').innerHTML = response.skyT;
+		document.getElementById('reclouds').innerHTML = response.clouds;
+		document.getElementById('bmp108P').innerHTML = response.P;
+		document.getElementById('lightLight').innerHTML = response.Light;
+	}
+};
+
+	xhttp.open("GET","CHART/RTdata.json", true);
+	xhttp.send();
+});
+
+		</script>
+	</body>
+
+</html>

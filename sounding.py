@@ -62,7 +62,7 @@ class uwyoClass:
 if __name__ == '__main__':
     print("Starting internet data downloader")
     try:
-        print("Retriving SKEW-T diagrams from:", SOUNDINGSTATION)
+        print("Retrieving SKEW-T diagrams from:", SOUNDINGSTATION)
     except:
         print("NO sounding station define in meteoconfig.py")
         exit(0)

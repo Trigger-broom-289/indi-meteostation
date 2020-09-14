@@ -2125,8 +2125,8 @@ class bigindiclient:
 			_normalize_whitespace(attrs.get('name', "")))
 		element.update(attrs,tag)
 		return element
-	
-	
+
+
 	def _receiver(self):
 		"""
 		A "thread" that receives data from the server
@@ -2148,15 +2148,15 @@ class bigindiclient:
 		@return: B{None}
 		@rtype: NoneType
 		"""
-		if not vector.tag.is_vector(): 
+		if not vector.tag.is_vector():
 			return
 		data=vector.get_xml(inditransfertypes.inew)
-		self.socket.send(data)
+		self.socket.send(str(data).encode('utf-8'))
 		vector._light._set_value("Busy")
-		
+
 	def wait_until_vector_available(self,devicename,vectorname):
 		"""
-		Looks if the requested vector has already been received and waits until it is received otherwise 
+		Looks if the requested vector has already been received and waits until it is received otherwise
 		@param devicename:  The name of the device
 		@type devicename: StringType
 		@param vectorname:  The name of the vector
@@ -2165,14 +2165,14 @@ class bigindiclient:
 		@rtype: NoneType
 		"""
 		self.get_vector(devicename,vectorname)
-	
+
 	def process_receive_vector_queue(self):
 		"""
 		Process the entries form the receive_vector_queue created
 		by the parsing thread and update the self.indivector.list
 		"""
 		while self.receive_vector_queue.empty()==False:
-			newVector=self.receive_vector_queue.get()			
+			newVector=self.receive_vector_queue.get()
 			devicename=newVector.getDevice()
 			vectorname=newVector.getName()
 			got=False
@@ -2475,7 +2475,7 @@ class bigindiclient:
 				return
 			if self.currentVector==None:
 				return
-			data=string.replace(str(data),'\\n','')
+			data=str.replace(str(data),'\\n','')
 			data = _normalize_whitespace(data)
 			if data=="'":
 				return

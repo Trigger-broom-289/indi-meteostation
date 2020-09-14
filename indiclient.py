@@ -14,7 +14,7 @@ An INDI Client Library
 		- Linux
 		- Windows
 		- any other platform supporting Python
-		
+
 	The simple way
 	--------------
 	The most easy way to write a script is demonstrated in the example below (same as file C{test.py})\n
@@ -43,9 +43,9 @@ An INDI Client Library
 		>>> print indi.get_float("Telescope Simulator","EQUATORIAL_COORD","RA")
 		3.5
 		>>> indi.quit()
-	
+
 	(if you omit the C{.wait_for_ok_timeout(60.0)} the command will still be send, but the function will not wait until the telescope moved to the new position.)
-	If this suits you needs you may take a look at: 
+	If this suits you needs you may take a look at:
 		- L{indiclient.get_bool}
 		- L{indiclient.get_float}
 		- L{indiclient.get_text}
@@ -53,7 +53,7 @@ An INDI Client Library
 		- L{indiclient.set_and_send_float}
 		- L{indiclient.set_and_send_switchvector_by_elementlabel}
 		- L{indiclient.set_and_send_text}
-	
+
 	\n
 
 	The object oriented way
@@ -81,7 +81,7 @@ An INDI Client Library
 		False
 		>>> indi.quit()
 
-	In order to do things like that you should first of all read the documentation of 
+	In order to do things like that you should first of all read the documentation of
 	classes in question (you will need roughly 30 minutes to do so) E{:}
 		- The INDI object classes:
 			- L{indivector}
@@ -94,7 +94,7 @@ An INDI Client Library
 		- Two important L{indiclient} methods:
 			- L{indiclient.send_vector}
 			- L{indiclient.get_vector}
-			
+
 	The event driven way
 	--------------------
 	Sometimes you want to act in a special way if a special element or a special vector has just been
@@ -104,7 +104,7 @@ An INDI Client Library
 	And add them with the functions:
 		- L{indiclient.add_custom_element_handler}
 		- L{indiclient.add_custom_vector_handler}
-	A custom hander function for an element is demonstrated in the example below 
+	A custom hander function for an element is demonstrated in the example below
 	(same as file C{testevent.py}):
 
 		>>> from indiclient import *
@@ -203,7 +203,10 @@ import sys
 import array
 import os
 import threading
-import Queue
+
+import queue
+#import queue as queue
+
 import copy
 import math
 import zlib
@@ -337,19 +340,19 @@ class _inditagfactory(_indinameconventions):
 			inditag=indixmltag(False,True,False,i,inditransfertypes.inew)
 			stringtag=self._get_newelementtag(basename)
 			self.dict.update({stringtag: inditag})
-				
+
 		inditag=indixmltag(False,False,True,None,inditransfertypes.inew)
 		self.dict.update({"message": inditag})
 
 
 	def create_tag(self,tag):
 		"""
-		@param tag : the XML tag denoting the vector 
+		@param tag : the XML tag denoting the vector
 		@type tag : StringType
-		@return: An L{indixmltag} created according to the information given in  L{tag} 
+		@return: An L{indixmltag} created according to the information given in  L{tag}
 		@rtype: L{indixmltag}
 		"""
-		if self.dict.has_key(tag):
+		if self.dict.__contains__(tag):
 			inditag=self.dict[tag]
 			return copy.deepcopy(inditag)
 		else:
@@ -726,20 +729,20 @@ class indielement(indinamedobject):
 		self._value=value
 
 	def tell(self):
-		""" 
+		"""
 		Prints all parameters of the object
 		@return: B{None}
 		@rtype: NoneType
 		"""
-		print "   ",self.name,self.label,self.tag.get_type(),self._value
-			
+		print("   ",self.name,self.label,self.tag.get_type(),self._value)
+
 	def get_text(self):
 		"""
 		@return: a string representation of it value
 		@rtype: StringType
 		"""
 		return self._value
-		
+
 	def set_text(self,text):
 		"""
 		@param text: A string representation of the data to be written into the object.
@@ -749,26 +752,26 @@ class indielement(indinamedobject):
 		"""
 		self._check_writeable()
 		self._set_value(str(text))
-		
+
 	def get_xml(self,transfertype):
 		tag=self.tag.get_xml(transfertype)
 		data="<"+tag+' name="'+self.name+'"> '+self._value+"</"+tag+"> "
 		return data
 	def updateByElement(self,element):
 		self._set_value(element._value)
-	
-	
+
+
 class indinumber(indielement):
 	"""
 	A floating point number with a defined format \n
-	@ivar format : A format string describing the way the number is displayed 
+	@ivar format : A format string describing the way the number is displayed
 	@type format : StringType
-	@ivar _min : The minimum value of the number 
+	@ivar _min : The minimum value of the number
 	@type _min : StringType
-	@ivar _max : The maximum value of the number 
+	@ivar _max : The maximum value of the number
 	@type _max : StringType
-	@ivar _step : The step increment of the number  
-	@type _step : StringType	
+	@ivar _step : The step increment of the number
+	@type _step : StringType
 	"""
 	def __init__(self,attrs,tag):
 		self._value=""
@@ -845,7 +848,7 @@ class indinumber(indielement):
 			except:
 				success=False
 				time.sleep(1)
-				print "INDI Warning: invalid float", self._value
+				print("INDI Warning: invalid float", self._value)
 		return x
 	
 	def get_digits_after_point(self):
@@ -999,9 +1002,9 @@ class indilight(indielement):
 				indielement._set_value(self,value)
 
 	def set_text(self,text):
-		raise Exception, "INDILigths are read only"
+		raise Exception("INDILigths are read only")
 		#self._set_value(str(text))
-	
+
 	def update(self,attrs,tag):
 		if self.tag.is_vectortag(tag):
 			self._set_value("Alert")
@@ -1184,13 +1187,13 @@ class indivector(indinamedobject):
 	value depending on current device status. Timeout values give Clients a simple
 	ability to detect dysfunctional Devices or broken communication and also gives them 
 	a way to predict the duration of an action for scheduling purposes as discussed later
-	
+
 	@type timeout  : StringType
 	@ivar timestamp : The time when the vector was send out by the INDI server.
 	@type timestamp : StringType
 	@ivar device  : The INDI device the vector belongs to
 	@type device  : StringType
-	@ivar _message  : The L{indimessage} associated with the vector or B{None} if not present 
+	@ivar _message  : The L{indimessage} associated with the vector or B{None} if not present
 	@type _message  : L{indimessage}
 	"""
 	def __init__(self,attrs,tag):
@@ -1207,24 +1210,24 @@ class indivector(indinamedobject):
 		self._light=indilight(attrs,tag)
 		self.group=_normalize_whitespace(attrs.get('group', ""))
 		self._perm= indipermissions(_normalize_whitespace(attrs.get('perm', "")))
-		if attrs.has_key('message'):
+		if attrs.__contains__('message'):
 				self._message=indimessage(attrs)
 		else:
 			self._message=None
 		self.elements=[]
 		self.port=None
 		self.host=None
-	
+
 	def get_message(self):
 		"""
-		@return: The L{indimessage} associated with the vector, if there is any, B{None} otherwise 
+		@return: The L{indimessage} associated with the vector, if there is any, B{None} otherwise
 		@rtype: L{indimessage}
 		"""
 		return self._message
-	
+
 	def _get_changed(self):
 		"""
-		@return: C{True} if the objects XML data was changed since the last L{_get_changed} was called, 
+		@return: C{True} if the objects XML data was changed since the last L{_get_changed} was called,
 		C{False} otherwise.
 		@rtype: BooleanType
 		"""
@@ -1240,7 +1243,7 @@ class indivector(indinamedobject):
 		@return: B{None}
 		@rtype: NoneType
 		"""
-		print self.device,self.name,self.label,self.tag.get_type(),self._perm.get_text()
+		print(self.device,self.name,self.label,self.tag.get_type(),self._perm.get_text())
 		for element in self.elements: 
 			element.tell()
 		
@@ -1296,7 +1299,7 @@ class indivector(indinamedobject):
 		while not(self._light.is_ok()):
 			time.sleep(checkinterval)
 			if (time.time()-t)>timeout:
-				raise Exception, ("timeout waiting for state to turn Ok "+
+				raise Exception("timeout waiting for state to turn Ok "+
 					"devicename=" +self.device+" vectorname= " + self.name+
 					" "+str(timeout)+ " "+str(time.time()-t)
 					)
@@ -1371,7 +1374,7 @@ class indiswitchvector(indivector):
 		self.rule = _normalize_whitespace(attrs.get('rule', ""))
 		
 	def tell(self):
-		print self.device,self.name,self.label,self.tag.get_type(),self.rule
+		print(self.device,self.name,self.label,self.tag.get_type(),self.rule)
 		for element in self.elements:
 			element.tell()
 	
@@ -1499,8 +1502,8 @@ class indimessage(indiobject):
 		@return: B{None}
 		@rtype: NoneType
 		"""
-		print "    "+"INDImessage " +self.device+" "+self.get_text()
-	
+		print("    "+"INDImessage " +self.device+" "+self.get_text())
+
 	def get_text(self):
 		"""
 		@return: A text representing the message received
@@ -1653,8 +1656,8 @@ class gui_indi_object_handler(_blocking_indi_object_handler):
 		@return: B{None}
 		@rtype:  NoneType		
 		"""
-		print "indiclient warning: signal received from GUI while changing gui element"
-		print "Danger of loopback!!!!"
+		print("indiclient warning: signal received from GUI while changing gui element")
+		print("Danger of loopback!!!!")
 		self.on_gui_changed(*args)
 	def on_gui_changed(self,*args):
 		"""
@@ -1983,10 +1986,10 @@ class bigindiclient:
 		self.socket.settimeout(0.001)
 		self.host=host;
 		self.port=port;
-		self.socket.send("<getProperties version='1.5'/>")
-		self.receive_event_queue=Queue.Queue()
-		self.running_queue=Queue.Queue()
-		self.receive_vector_queue=Queue.Queue()
+		self.socket.send(b"<getProperties version='1.5'/>")
+		self.receive_event_queue=queue.Queue()
+		self.running_queue=queue.Queue()
+		self.receive_vector_queue=queue.Queue()
 		self.timeout=1
 		self.blob_def_handler=self._default_def_handler
 		self.number_def_handler=self._default_def_handler
@@ -1996,20 +1999,20 @@ class bigindiclient:
 		self.light_def_handler=self._default_def_handler
 		self.message_handler=self._default_message_handler
 		self.timeout_handler=self._default_timeout_handler
-		self.running_queue.put(True) 
+		self.running_queue.put(True)
 		self.receivetimer = threading.Timer(0.01, self._receiver)
 		self.receivetimer.start()
 		self.first=True
-		
+
 	#def set_verbose(self):
 	#	FIXME
 	#	Does not work in the treaded version
 	#	solution: add queue from indiclient to thread
-	
-	
+
+
 	def _element_received(self,vector,element):
 		""" Called during the L{process_events} method each time an INDI element has been received
-		@param vector: The vector containing the element that has been received  
+		@param vector: The vector containing the element that has been received
 		@type vector: indivector
 		@param element:  The element that has been received
 		@type element: indielement
@@ -2038,7 +2041,7 @@ class bigindiclient:
 		@return: B{None}
 		@rtype: NoneType
 		"""
-		print "resetting connection port"
+		print("resetting connection port")
 		for i in range(10):
 			time.sleep(0.1)
 			self.receivetimer.cancel()
@@ -2061,9 +2064,9 @@ class bigindiclient:
 				self.socket.settimeout(0.01);
 			except:
 				time.sleep(1)
-				print "Reconnecting"
+				print("Reconnecting")
 				failed=True
-		print "connection reset successfully"
+		print("connection reset successfully")
 		self.receivetimer = threading.Timer(0.01, self._receiver)
 		self.receivetimer.start()
 	
@@ -2321,7 +2324,7 @@ class bigindiclient:
 		@return: B{None}
 		@rtype: NoneType
 		"""
-		print "Timeout",devicename,vectorname
+		print("Timeout",devicename,vectorname)
 		#raise Exception
 		#self._receive()
 
@@ -2388,9 +2391,9 @@ class bigindiclient:
 		@return: B{None}
 		@rtype: NoneType
 		"""
-		print "got message by host :"+indi.host+" : "
+		print("got message by host :"+indi.host+" : ")
 		message.tell()
-	
+
 	def process_events(self):
 		"""
 		Has to be called frequently by any program using this client. All custom handler methods will called by this (and only by this)
@@ -2430,21 +2433,21 @@ class bigindiclient:
 							self.light_def_handler(vector,self)
 						self.defvectorlist.append(vector)
 				else:
-					print "Received bogus INDIVector"
+					print("Received bogus INDIVector")
 					try:
 						vector.tell()
-						raise Exception 
+						raise Exception
 						vector.tell()
 					except:
-						print "Error printing bogus INDIVector"
-						raise Exception 
+						print("Error printing bogus INDIVector")
+						raise Exception
 		except:
 			a,b,c =sys.exc_info()
 			sys.excepthook(  a,b,c	)
 			self.quit()
-			raise Exception, "indiclient: Error during process events"
+			raise Exception("indiclient: Error during process events")
 
-			
+
 	def _receive(self):
 		"""receive data from the server
 		@return: B{None}
@@ -2456,11 +2459,11 @@ class bigindiclient:
 			self.data=""
 		if self.data!="":
 			if self.verbose:
-				print self.data
+				print(self.data)
 			self.expat.Parse( self.data,0)
-		
+
 	def _char_data(self,data):
-		"""Char data handler for expat parser. For details (see 
+		"""Char data handler for expat parser. For details (see
 		U{http://www.python.org/doc/current/lib/expat-example.html})
 		@param data: The data contained in the INDI element
 		@type data: StringType
@@ -2482,10 +2485,10 @@ class bigindiclient:
 		except:
 			a,b,c =sys.exc_info()
 			sys.excepthook(  a,b,c	)
-			raise Exception, "indiclient: Error during char data handler"
-		
+			raise Exception("indiclient: Error during char data handler")
+
 	def _end_element(self,name):
-		"""End of XML element handler for expat parser. For details (see 
+		"""End of XML element handler for expat parser. For details (see
 		U{http://www.python.org/doc/current/lib/expat-example.html})
 		@param name : The name of the XML object
 		@type name : StringType
@@ -2513,11 +2516,11 @@ class bigindiclient:
 		except:
 			a,b,c =sys.exc_info()
 			sys.excepthook(  a,b,c	)
-			raise Exception, "indiclient: Error during end element handler"
-		
+			raise Exception("indiclient: Error during end element handler")
+
 	def _start_element(self,name, attrs):
 		"""
-		Start XML element handler for expat parser. For details (see 
+		Start XML element handler for expat parser. For details (see
 		U{http://www.python.org/doc/current/lib/expat-example.html})
 		@param name : The name of the XML object
 		@type name : StringType
@@ -2529,7 +2532,7 @@ class bigindiclient:
 		obj=self._factory.create(name,attrs)
 		if obj==None:
 			return
-		if attrs.has_key('message'):
+		if attrs.__contains__('message'):
 			None
 			self.receive_event_queue.put(indimessage(attrs))
 		if obj.tag.is_vector():
@@ -2552,7 +2555,7 @@ class bigindiclient:
 		#	a,b,c =sys.exc_info()
 		#	sys.excepthook(  a,b,c )
 		#	raise Exception, "indiclient: Error during start element handler"
-	
+
 	def enable_blob(self):
 		"""
 		Sends a signal to the server that tells it, that this client wants to receive L{indiblob} objects. If this method is not called, the server will not 
@@ -2562,12 +2565,12 @@ class bigindiclient:
 		"""
 		data="<enableBLOB>Also</enableBLOB>\n"
 		self.socket.send(data)
-		
+
 class indiclient(bigindiclient):
 	"""providing a simplified interface to L{bigindiclient}"""
 	def __init__(self,host,port):
 		bigindiclient.__init__(self,host,port)
-	
+
 	def set_and_send_text(self,devicename,vectorname,elementname,text):
 		"""
 		Sets the value of an element by a text, and sends it to the server

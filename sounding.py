@@ -10,7 +10,6 @@ import tidy
 import datetime
 import time
 import locale
-#from string import upper
 from string import *
 from meteoconfig import *
 
@@ -76,6 +75,6 @@ if __name__ == '__main__':
             s.get_sounding_data()
             urllib.urlretrieve(EUMETSAT_LAST, CHARTPATH+"meteosat.jpg")
         except:
-            print("Fail to retrive internet data")
+            print("Fail to retrieve internet data")
         del s
         time.sleep(600)

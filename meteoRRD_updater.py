@@ -94,10 +94,7 @@ fi.close()
 
 # connect ones to configure the port
 INDIPORT = int(INDIPORT)
-print("Indi port=",INDIPORT)
-print("Indi server=",INDISERVER)
 indi = indiclient(INDISERVER, INDIPORT)
-#indi = indiclient("localhost", int(7625))
 print(indi)
 indi.set_and_send_text(INDIDEVICE, "DEVICE_PORT", "PORT", INDIDEVICEPORT)
 vector = indi.get_vector(INDIDEVICE, "CONNECTION")
@@ -109,7 +106,7 @@ indi.quit()
 time.sleep(1)
 
 
-# connect an retrive info
+# connect an retrieve info
 while (True):
     try:
 

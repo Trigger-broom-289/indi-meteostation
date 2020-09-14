@@ -28,9 +28,9 @@ def writeJson(consolidation, resolution):
         if ret:
             #	 	print rrdtool.error()
             mags = ret[1]
-            print(mags)
+#            print(mags)
             values = ret[2][0]
-            print(values)
+#            print(values)
             i = 0
             for mag in mags:
                 json_dict[mag] = int(values[i]*100)/100.

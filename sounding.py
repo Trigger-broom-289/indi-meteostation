@@ -6,6 +6,8 @@
 # NACHO MAS 2013
 
 import urllib
+import urllib.request
+import urllib.parse
 import tidy
 import datetime
 import time
@@ -35,22 +37,23 @@ class uwyoClass:
         print(self.YEAR, self.MONTH, self.FROM)
 
     def get_sounding_skewt(self):
-        data = urllib.urlencode({"region": "europe", "TYPE": "GIF:SKEWT", "YEAR": self.YEAR,
-                                 "MONTH": self.MONTH, "FROM": self.FROM, "TO": self.FROM, "STNM": SOUNDINGSTATION})
+        data = urllib.parse.urlencode({"region": "europe", "TYPE": "GIF:SKEWT", "YEAR": self.YEAR,
+                                       "MONTH": self.MONTH, "FROM": self.FROM, "TO": self.FROM, "STNM": SOUNDINGSTATION}).encode("utf-8")
+
         # print data
-        s = urllib.urlopen("http://weather.uwyo.edu/cgi-bin/sounding?", data)
+        s = urllib.request.urlopen(
+            "http://weather.uwyo.edu/cgi-bin/sounding?", data)
         o = s.read()
         s.close()
         document = tidy.parseString(o)
-        urllib.urlretrieve("http://weather.uwyo.edu/upperair/images/"+self.YEAR +
-                           self.MONTH+self.FROM+".08221.skewt.gif", CHARTPATH+"skewt.gif")
         # print document
 
     def get_sounding_data(self):
-        data = urllib.urlencode({"region": "europe", "TYPE": "TEXT:LIST", "YEAR": self.YEAR,
-                                 "MONTH": self.MONTH, "FROM": self.FROM, "TO": self.FROM, "STNM": SOUNDINGSTATION})
+        data = urllib.parse.urlencode({"region": "europe", "TYPE": "TEXT:LIST", "YEAR": self.YEAR,
+                                       "MONTH": self.MONTH, "FROM": self.FROM, "TO": self.FROM, "STNM": SOUNDINGSTATION}).encode("utf-8")
         # print data
-        s = urllib.urlopen("http://weather.uwyo.edu/cgi-bin/sounding?", data)
+        s = urllib.request.urlopen(
+            "http://weather.uwyo.edu/cgi-bin/sounding?", data)
         o = s.read()
         s.close()
         document = tidy.parseString(o)
@@ -73,7 +76,7 @@ if __name__ == '__main__':
         try:
             s.get_sounding_skewt()
             s.get_sounding_data()
-            urllib.urlretrieve(EUMETSAT_LAST, CHARTPATH+"meteosat.jpg")
+            urllib.request.urlretrieve(EUMETSAT_LAST, CHARTPATH+"meteosat.jpg")
         except:
             print("Fail to retrieve internet data")
         del s

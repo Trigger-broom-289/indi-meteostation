@@ -46,6 +46,9 @@ class uwyoClass:
         o = s.read()
         s.close()
         document = tidy.parseString(o)
+        urllib.request.urlretrieve("http://weather.uwyo.edu/upperair/images/"+self.YEAR +
+                           self.MONTH+self.FROM+".10548.skewt.parc.gif", CHARTPATH+"skewt.gif")
+#        print("URL =", urlib)
         # print document
 
     def get_sounding_data(self):
